@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+/* ── Replai Design Tokens ── */
+:root {
+  --bg-cream:      #F4EFE6;
+  --teal:          #2E6F6A;
+  --teal-dark:     #235653;
+  --teal-light:    #3D8C86;
+  --terra:         #C9603F;
+  --terra-dark:    #A84D30;
+  --ink:           #1A1A1A;
+  --ink-muted:     #6B6B6B;
+  --ink-subtle:    #9B9B9B;
+  --surface:       #FFFFFF;
+  --border:        #E8E1D5;
+
+  /* ── Playful Geometric tokens — Replai brand palette ── */
+  --pg-bg:          #F4EFE6;   /* warm cream paper (brand) */
+  --pg-fg:          #1A1A1A;   /* brand ink — also the hard-shadow color */
+  --pg-muted:       #EFE7D8;   /* muted cream */
+  --pg-muted-fg:    #6B6B6B;   /* brand ink-muted */
+  --pg-accent:      #2E6F6A;   /* teal — primary brand */
+  --pg-accent-dark: #235653;   /* teal pressed */
+  --pg-secondary:   #C9603F;   /* terracotta — pop / featured */
+  --pg-tertiary:    #E8A33D;   /* warm gold — optimism */
+  --pg-quaternary:  #4FA39C;   /* bright teal/mint — freshness */
+  --pg-soft:        #E2DAC9;   /* warm soft shadow / border */
+  --pg-border:      #E2DAC9;
+  --pg-input-border:#CFC6B4;
+}
+
+@theme inline {
+  --color-bg-cream:    var(--bg-cream);
+  --color-teal:        var(--teal);
+  --color-teal-dark:   var(--teal-dark);
+  --color-teal-light:  var(--teal-light);
+  --color-terra:       var(--terra);
+  --color-terra-dark:  var(--terra-dark);
+  --color-ink:         var(--ink);
+  --color-ink-muted:   var(--ink-muted);
+  --color-ink-subtle:  var(--ink-subtle);
+  --color-surface:     var(--surface);
+  --color-border:      var(--border);
+
+  --font-serif:   var(--font-noto-serif-tc);
+  --font-display: var(--font-fraunces);
+  --font-sans:    var(--font-noto-sans-tc);
+
+  /* Playful Geometric */
+  --color-pg-bg:          var(--pg-bg);
+  --color-pg-fg:          var(--pg-fg);
+  --color-pg-muted:       var(--pg-muted);
+  --color-pg-muted-fg:    var(--pg-muted-fg);
+  --color-pg-accent:      var(--pg-accent);
+  --color-pg-accent-dark: var(--pg-accent-dark);
+  --color-pg-secondary:   var(--pg-secondary);
+  --color-pg-tertiary:    var(--pg-tertiary);
+  --color-pg-quaternary:  var(--pg-quaternary);
+  --color-pg-soft:        var(--pg-soft);
+  --color-pg-border:      var(--pg-border);
+  --color-pg-input-border:var(--pg-input-border);
+
+  --font-pg-display: var(--font-outfit);
+  --font-pg-body:    var(--font-jakarta);
+}
+
+/* ── Base ── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide system cursor on pointer devices — custom cursor takes over */
+@media (pointer: fine) {
+  html, a, button, [role="button"], input, label, select {
+    cursor: none !important;
+  }
+}
+
+body {
+  background-color: var(--bg-cream);
+  color: var(--ink);
+  font-family: var(--font-noto-sans-tc), "Noto Sans TC", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* ── Playful Geometric: textures & motion ── */
+/* Dot-grid paper texture used behind decorated sections */
+@utility pg-dots {
+  background-image: radial-gradient(var(--pg-border) 1.6px, transparent 1.6px);
+  background-size: 18px 18px;
+}
+
+/* Hard "pop" shadows in brand ink — single source so a token change
+   re-skins every card/badge/button at once. */
+@utility pop-sm { box-shadow: 2px 2px 0 0 var(--pg-fg); }
+@utility pop    { box-shadow: 4px 4px 0 0 var(--pg-fg); }
+@utility pop-lg { box-shadow: 6px 6px 0 0 var(--pg-fg); }
+
+/* Icons wiggle on hover; cards/badges pop on entrance */
+@keyframes pg-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(4deg); }
+  75%      { transform: rotate(-4deg); }
+}
+
+@keyframes pg-pop {
+  0%   { opacity: 0; transform: scale(0.8); }
+  60%  { opacity: 1; transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
