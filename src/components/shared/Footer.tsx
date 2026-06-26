@@ -25,12 +25,12 @@ export default function Footer() {
           {/* Links */}
           <div className="flex flex-col items-start gap-3 font-pg-body text-sm sm:items-end">
             <a
-              href="https://linktr.ee/replai"
+              href="https://linktr.ee/replaii"
               target="_blank"
               rel="noopener noreferrer"
               className="font-bold text-white underline decoration-pg-tertiary decoration-2 underline-offset-4 transition-colors hover:text-pg-tertiary"
             >
-              linktr.ee/replai
+              linktr.ee/replaii
             </a>
             <a
               href="/contact"
