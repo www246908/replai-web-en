@@ -36,7 +36,7 @@ const TESTIMONIALS = [
   {
     id: "nail",
     quote:
-      "I’m always busy serving walk-in clients and can’t reply to DMs on time. Clients get tired of waiting and book elsewhere — I never knew how many potential bookings I was losing every day.",
+      "I'm always busy serving walk-in clients and can't reply to DMs on time. Clients get tired of waiting and book elsewhere — I never knew how many potential bookings I was losing every day.",
     name: "Mia Chen",
     role: "Independent Nail Studio Owner",
     initials: "MC",
@@ -46,7 +46,7 @@ const TESTIMONIALS = [
   {
     id: "fitness",
     quote:
-      "Customers message me about training packages late at night while I’m asleep. By the time I see their message next morning, they’ve already lost interest. I’ve lost full session fees this way countless times.",
+      "Customers message me about training packages late at night while I'm asleep. By the time I see their message next morning, they've already lost interest. I've lost full session fees this way countless times.",
     name: "Kevin Wu",
     role: "Independent Personal Trainer",
     initials: "KW",
@@ -78,10 +78,10 @@ function Avatar({
   return (
     <div
       className={`
-        h-12 w-12 rounded-full ${hue}
+        h-14 w-14 rounded-full ${hue}
         flex flex-shrink-0 items-center justify-center
         border-2 border-[var(--pg-fg)]
-        font-pg-display text-sm font-bold ${textColor}
+        font-pg-display text-base font-bold ${textColor}
         shadow-[2px_2px_0_0_var(--pg-fg)]
       `}
     >
@@ -95,7 +95,7 @@ function QuoteMark() {
   return (
     <svg
       viewBox="0 0 40 32"
-      className="mb-3 h-7 w-9 flex-shrink-0 text-pg-secondary"
+      className="mb-3 h-8 w-10 flex-shrink-0 text-pg-secondary"
       fill="currentColor"
       aria-hidden
     >
@@ -133,27 +133,27 @@ function TestimonialCard({
       className={`
         flex w-[85vw] flex-shrink-0 snap-start flex-col
         cursor-default rounded-2xl border-2 border-[var(--pg-fg)] bg-white
-        p-7 sm:w-[360px] sm:p-8 md:w-auto
+        p-8 sm:w-[400px] sm:p-10 md:w-auto
         ${CARD_SHADOWS[index % CARD_SHADOWS.length]}
       `}
     >
       <QuoteMark />
 
       {/* Quote text */}
-      <p className="mb-6 flex-1 font-pg-body text-[15px] leading-relaxed text-pg-fg sm:text-base">
+      <p className="mb-6 flex-1 font-pg-body text-base leading-relaxed text-pg-fg sm:text-lg">
         {item.quote}
       </p>
 
       {/* Attribution */}
-      <div className="flex items-center gap-3 border-t-2 border-dashed border-pg-soft pt-5">
+      <div className="flex items-center gap-4 border-t-2 border-dashed border-pg-soft pt-5">
         <Avatar
           initials={item.initials}
           hue={item.hue}
           textColor={item.textColor}
         />
         <div>
-          <p className="font-pg-display text-sm font-bold text-pg-fg">{item.name}</p>
-          <p className="mt-0.5 font-pg-body text-xs text-pg-muted-fg">{item.role}</p>
+          <p className="font-pg-display text-base font-bold text-pg-fg">{item.name}</p>
+          <p className="mt-0.5 font-pg-body text-sm text-pg-muted-fg">{item.role}</p>
         </div>
       </div>
     </motion.div>
@@ -168,7 +168,7 @@ function StatItem({ target, suffix, label, shouldStart }: { target: number; suff
       <p className="mb-1 font-pg-display text-3xl font-extrabold leading-none text-pg-accent tabular-nums sm:text-4xl">
         {count}{suffix}
       </p>
-      <p className="font-pg-body text-xs leading-snug text-pg-muted-fg sm:text-sm">{label}</p>
+      <p className="font-pg-body text-sm leading-snug text-pg-muted-fg sm:text-base">{label}</p>
     </div>
   );
 }
@@ -211,7 +211,7 @@ export default function Testimonials() {
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
         >
-          <span className="mb-6 inline-flex items-center gap-2 rounded-full border-2 border-[var(--pg-fg)] bg-pg-secondary px-4 py-1.5 font-pg-display text-sm font-bold text-white shadow-[3px_3px_0_0_var(--pg-fg)]">
+          <span className="mb-6 inline-flex items-center gap-2 rounded-full border-2 border-[var(--pg-fg)] bg-pg-secondary px-4 py-1.5 font-pg-display text-base font-bold text-white shadow-[3px_3px_0_0_var(--pg-fg)]">
             Hear From Our Studio Owners
           </span>
         </motion.div>
@@ -233,7 +233,7 @@ export default function Testimonials() {
           initial={prefersReduced ? {} : { opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mx-auto mt-8 max-w-md font-pg-body text-lg leading-relaxed text-pg-muted-fg"
+          className="mx-auto mt-8 max-w-md font-pg-body text-xl leading-relaxed text-pg-muted-fg"
         >
           These are genuine pain points shared by local studio operators.
           <br />
@@ -289,7 +289,7 @@ export default function Testimonials() {
         initial={prefersReduced ? {} : { opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ duration: 0.5, delay: 0.7 }}
-        className="relative mt-8 text-center font-pg-body text-sm text-pg-muted-fg"
+        className="relative mt-8 text-center font-pg-body text-base text-pg-muted-fg"
       >
         Trusted by{" "}
         <span className="font-bold text-pg-fg">100+ independent studios</span>{" "}

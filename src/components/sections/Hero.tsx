@@ -54,8 +54,8 @@ function MagneticLink({
   );
 }
 
-// 逐字彈出動畫
-function CharReveal({
+// 逐詞彈出動畫
+function WordReveal({
   text,
   delay = 0,
   className = "",
@@ -67,11 +67,11 @@ function CharReveal({
   isInView: boolean;
 }) {
   const prefersReduced = useReducedMotion();
-  const chars = text.split("");
+  const words = text.split(" ");
 
   return (
     <span className={`inline ${className}`} aria-label={text}>
-      {chars.map((char, i) => (
+      {words.map((word, i) => (
         <span
           key={i}
           className="inline-block overflow-hidden"
@@ -85,11 +85,14 @@ function CharReveal({
             transition={{
               duration: 0.55,
               ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-              delay: delay + i * 0.022,
+              delay: delay + i * 0.06,
             }}
           >
-            {char === " " ? " " : char}
+            {word}
           </motion.span>
+          {i < words.length - 1 && (
+            <span className="inline-block">&nbsp;</span>
+          )}
         </span>
       ))}
     </span>
@@ -112,12 +115,12 @@ function useReveal(delay = 0) {
 
 // 聊天對話流程
 const CHAT_SEQUENCE = [
-  { id: 1, type: "customer" as const, text: "Hi! I’d like to book a nail appointment this Saturday, any slots left?", delay: 0.6 },
+  { id: 1, type: "customer" as const, text: "Hi! I'd like to book a nail appointment this Saturday, any slots left?", delay: 0.6 },
   { id: 2, type: "typing" as const,   text: "",                                   delay: 1.3 },
   { id: 3, type: "ai" as const,       text: "Sure! We have slots at 2PM and 4PM, which works better for you?", delay: 2.1 },
   { id: 4, type: "customer" as const, text: "4PM sounds perfect!",                         delay: 3.0 },
   { id: 5, type: "typing" as const,   text: "",                                   delay: 3.6 },
-  { id: 6, type: "ai" as const,       text: "Your 4PM slot on Saturday is reserved ✓ We’ll notify you once confirmed by the owner.", delay: 4.3 },
+  { id: 6, type: "ai" as const,       text: "Your 4PM slot on Saturday is reserved ✓ We'll notify you once confirmed by the owner.", delay: 4.3 },
 ] as const;
 
 // 輸入中動畫點點
@@ -136,7 +139,7 @@ function TypingDots() {
   );
 }
 
-// 手機聊天視窗（手機最大寬度縮小，不溢出螢幕）
+// 手機聊天視窗
 function ChatWindow({ shouldPlay }: { shouldPlay: boolean }) {
   const prefersReduced = useReducedMotion();
   const [visibleIds, setVisibleIds] = useState<number[]>([]);
@@ -156,9 +159,7 @@ function ChatWindow({ shouldPlay }: { shouldPlay: boolean }) {
 
   return (
     <div className="relative mx-auto w-full max-w-[300px] sm:max-w-[340px]">
-      {/* 手機外框 */}
       <div className="relative overflow-hidden rounded-[2.25rem] border-2 border-[var(--pg-fg)] bg-white shadow-[8px_8px_0_0_var(--pg-fg)]">
-        {/* 頂部標題欄 */}
         <div className="bg-pg-accent px-4 pb-4 pt-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
@@ -179,7 +180,6 @@ function ChatWindow({ shouldPlay }: { shouldPlay: boolean }) {
           </div>
         </div>
 
-        {/* 對話內容 text-base 放大 */}
         <div className="flex min-h-[280px] flex-col gap-2.5 bg-pg-muted px-3 py-4">
           {CHAT_SEQUENCE.map((msg) => {
             if (!visibleIds.includes(msg.id)) return null;
@@ -208,7 +208,6 @@ function ChatWindow({ shouldPlay }: { shouldPlay: boolean }) {
           })}
         </div>
 
-        {/* 底部輸入框 */}
         <div className="flex items-center gap-2 border-t-2 border-[var(--pg-fg)] bg-white px-3 py-2.5">
           <div className="flex-1 rounded-full bg-pg-muted px-3 py-2 font-pg-body text-base text-pg-muted-fg">Type a message...</div>
           <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[var(--pg-fg)] bg-pg-accent">
@@ -217,7 +216,6 @@ function ChatWindow({ shouldPlay }: { shouldPlay: boolean }) {
         </div>
       </div>
 
-      {/* 裝飾貼紙文字放大 */}
       <motion.div
         initial={prefersReduced ? {} : { opacity: 0, scale: 0.6, y: 10 }}
         animate={visibleIds.length > 0 ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.6, y: 10 }}
@@ -246,7 +244,6 @@ export default function Hero() {
   const prefersReduced = useReducedMotion();
   const reveal = useReveal;
 
-  // 手機視窗滾動視差
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
@@ -258,10 +255,8 @@ export default function Hero() {
       ref={sectionRef}
       className="relative flex min-h-screen items-center overflow-hidden bg-pg-bg pb-16 pt-20 sm:pt-24"
     >
-      {/* 背景點點紋路 */}
       <div aria-hidden className="pg-dots pointer-events-none absolute inset-0 opacity-50" />
 
-      {/* 裝飾幾何圖案 僅桌機顯示 lg以上 */}
       <div aria-hidden className="pointer-events-none absolute inset-0 hidden overflow-hidden lg:block">
         <div className="absolute -left-24 top-24 h-96 w-96 rounded-full border-2 border-[var(--pg-fg)]/10 bg-pg-tertiary/20" />
         <Shapes.Ring className="absolute right-[6%] top-[16%] h-12 w-12 text-pg-secondary" />
@@ -272,46 +267,41 @@ export default function Hero() {
 
       <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
-          {/* 左側文案區：手機取消左右偏移，僅桌機偏移 */}
-          <div className="order-2 lg:order-1 lg:-ml-6 xl:-ml-12">
-            {/* 頂部標籤：手機取消偏移 */}
+          <div className="order-1 lg:order-1 lg:-ml-6 xl:-ml-12">
             <motion.div {...reveal(0)} animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}>
-              <span className="mb-6 inline-flex items-center gap-2 rounded-full border-2 border-[var(--pg-fg)] bg-pg-tertiary px-4 py-1.5 font-pg-display text-base font-bold text-pg-fg shadow-[3px_3px_0_0_var(--pg-fg)] lg:-ml-6 xl:-ml-12">
+              <span className="mb-3 inline-flex items-center gap-2 rounded-full border-2 border-[var(--pg-fg)] bg-pg-tertiary px-4 py-1.5 font-pg-display text-base font-bold text-pg-fg shadow-[3px_3px_0_0_var(--pg-fg)] lg:-ml-6 xl:-ml-12">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-pg-secondary" />
                 AI Customer Service, Open 24/7
               </span>
             </motion.div>
 
-            {/* 大標題：手機縮小字號、行高更舒適 */}
-            <h1 
-              className="mb-3 font-pg-display text-4xl sm:text-5xl lg:text-[3.75rem] xl:text-7xl font-extrabold leading-[1.2] tracking-tight text-pg-fg"
-            >
-              <span className="block">
-                <CharReveal text="Customers message you," delay={0.08} isInView={isInView} />
-              </span>
-              <span className="block">
-                <CharReveal text="but you’re busy?" delay={0.26} isInView={isInView} />
-              </span>
-              <span className="relative block">
-                <CharReveal text="We’ll handle it." delay={0.44} className="text-pg-accent" isInView={isInView} />
-                <Squiggle className="absolute bottom-1 left-0 h-2 w-[5.5em] text-pg-secondary" />
-              </span>
-            </h1>
+            {/* 大標題：3行，行距緊湊 */}
+                        {/* 大標題：3行，行距緊湊 */}
+            <h1 className="mb-3 max-w-[500px] font-pg-display text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold leading-[1.05] tracking-wide text-pg-fg">
+  <span className="block whitespace-nowrap">
+    <WordReveal text="Customers DM you," delay={0.08} isInView={isInView} />
+  </span>
+  <span className="block whitespace-nowrap">
+    <WordReveal text="but you're busy?" delay={0.22} isInView={isInView} />
+  </span>
+  <span className="relative block whitespace-nowrap">
+    <WordReveal text="We'll handle it." delay={0.36} className="text-pg-accent" isInView={isInView} />
+    <Squiggle className="absolute bottom-0 left-0 h-2 w-[5.5em] text-pg-secondary" />
+  </span>
+</h1>
 
-            {/* 副標：手機字體適中、換行自然 */}
             <motion.p
               {...reveal(0.62)}
               animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
-              className="mb-6 mt-5 max-w-md font-pg-body text-lg sm:text-xl lg:text-2xl leading-relaxed text-pg-muted-fg"
+              className="mb-6 mt-3 max-w-md font-pg-body text-lg sm:text-xl lg:text-2xl leading-relaxed text-pg-muted-fg"
             >
-              No matter what you’re occupied with,
+              No matter what you're occupied with,
               <br className="hidden sm:block" />
               AI catches every incoming message for you.
               <br />
               <span className="font-bold text-pg-fg">Not a single lead missed.</span>
             </motion.p>
 
-            {/* 按鈕手機上下堆疊、滿版寬度 */}
             <motion.div
               {...reveal(0.72)}
               animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
@@ -335,7 +325,6 @@ export default function Hero() {
               </MagneticLink>
             </motion.div>
 
-            {/* 客戶佐證 */}
             <motion.div
               {...reveal(0.82)}
               animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
@@ -358,7 +347,6 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* 右側手機聊天框：手機無左右偏移，居中顯示 */}
           <motion.div
             initial={prefersReduced ? {} : { opacity: 0, x: 40, filter: "blur(8px)" }}
             animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
