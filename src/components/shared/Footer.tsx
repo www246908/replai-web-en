@@ -16,7 +16,7 @@ export default function Footer() {
               Replai<span className="text-pg-tertiary">.</span>
             </p>
             <p className="max-w-xs font-pg-body text-sm leading-snug">
-              Capture every message for solo entrepreneurs in Taiwan.
+              Capture every message for Small business globally.
               <br />
               24/7 AI auto-reply, never miss a single customer inquiry.
             </p>
